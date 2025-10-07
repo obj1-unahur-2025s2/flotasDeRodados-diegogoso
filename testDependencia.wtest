@@ -1,0 +1,59 @@
+import rodados.*
+import dependencia.*
+/*Como dijimos, cada **dependencia** de la municipalidad maneja una _flota de rodados_. 
+Un rodado puede estar compartido entre varias dependencias*/
+describe "probando una dependencia" {
+  const miDependencia = new Dependencia(empleados = 10)
+  const miCorsa = new Corsa(color = "rojo")
+  const miKwid = new Kwid(tieneTanqueAdicional = true)
+  const miKwid2 = new Kwid(tieneTanqueAdicional = false)
+  
+  test "agregar a la flota"{
+    miDependencia.agregarAFlota(miCorsa)
+    miDependencia.agregarAFlota(miKwid)
+    assert.equals(2, miDependencia.flota.size())
+  }
+  
+  test "quitar de la flota"{
+    miDependencia.agregarAFlota(miCorsa)
+    miDependencia.agregarAFlota(miKwid)
+    miDependencia.quitarDeFlota(miCorsa)
+    assert.equals(1, miDependencia.flota.size())
+  }
+
+  
+  test "peso total de la flota"{
+    miDependencia.agregarAFlota(miCorsa) // 1300
+    miDependencia.agregarAFlota(miKwid)   // 1350
+    assert.equals(2650, miDependencia.pesoTotalFlota())
+  }
+  
+  test "esta bien equipada"{
+    miDependencia.agregarAFlota(miCorsa) // vel max 150
+    miDependencia.agregarAFlota(miKwid)   // vel max 110
+    miDependencia.agregarAFlota(miKwid2)  // vel max 120
+    assert.equals(true, miDependencia.estaBienEquipada())
+  }
+  
+  test "capacidad total en color"{
+    miDependencia.agregarAFlota(miCorsa) // capacidad 4, color rojo
+    miDependencia.agregarAFlota(miKwid)   // capacidad 3, color azul
+    miDependencia.agregarAFlota(miKwid2)  // capacidad 4, color azul
+    assert.equals(7, miDependencia.capacidadTotalEnColor("azul"))
+    assert.equals(4, miDependencia.capacidadTotalEnColor("rojo"))
+    assert.equals(0, miDependencia.capacidadTotalEnColor("verde"))
+  }
+  
+  test "color del rodado mas rapido"{
+    miDependencia.agregarAFlota (miCorsa) // vel max 150, color rojo
+    miDependencia.agregarAFlota (miKwid)   // vel max 110, color azul
+    miDependencia.agregarAFlota (miKwid2)  // vel max 120, color azul
+    assert.equals("rojo", miDependencia.colorDelRodadoMasRapido())
+    const miCorsa2 = new Corsa(color = "verde") // vel max 150, color verde
+    miDependencia.agregarAFlota (miCorsa2)
+    assert.equals("verde", miDependencia.colorDelRodadoMasRapido()) 
+    const miCorsa3 = new Corsa(color = "azul") // vel max 150, color azul
+    miDependencia.agregarAFlota (miCorsa3)
+    assert.equals("azul", miDependencia.colorDelRodadoMasRapido())
+  }
+}
