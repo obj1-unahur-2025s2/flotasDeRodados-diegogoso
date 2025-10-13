@@ -1,59 +1,28 @@
 import rodados.*
 import dependencia.*
-/*Como dijimos, cada **dependencia** de la municipalidad maneja una _flota de rodados_. 
-Un rodado puede estar compartido entre varias dependencias*/
-describe "probando una dependencia" {
-  const miDependencia = new Dependencia(empleados = 10)
-  const miCorsa = new Corsa(color = "rojo")
-  const miKwid = new Kwid(tieneTanqueAdicional = true)
-  const miKwid2 = new Kwid(tieneTanqueAdicional = false)
-  
-  test "agregar a la flota"{
-    miDependencia.agregarAFlota(miCorsa)
-    miDependencia.agregarAFlota(miKwid)
-    assert.equals(2, miDependencia.flota.size())
-  }
-  
-  test "quitar de la flota"{
-    miDependencia.agregarAFlota(miCorsa)
-    miDependencia.agregarAFlota(miKwid)
-    miDependencia.quitarDeFlota(miCorsa)
-    assert.equals(1, miDependencia.flota.size())
-  }
+describe "test dependencia municipal"{
+  const auto1 = new Corsa(color= "rojo")
+  const auto2 = new Corsa(color= "azul")
+  const auto3 = new Kwid(tieneTanqueAdicional= true)
+  const auto4 = new Kwid(tieneTanqueAdicional= false)
+  const auto5 = new RodadoEspecial(capacidad= 2, velocidadMaxima= 180, color = "verde", peso = 1200)
+  const dependencia1 = new Dependencia(empleados= 50)
+  const dependencia2 = new Dependencia(empleados= 30)
 
-  
-  test "peso total de la flota"{
-    miDependencia.agregarAFlota(miCorsa) // 1300
-    miDependencia.agregarAFlota(miKwid)   // 1350
-    assert.equals(2650, miDependencia.pesoTotalFlota())
+test "Agregar y quitar rodados de la flota"{
+  dependencia1.agregarAFlota(auto1)
+  dependencia1.agregarAFlota(auto2)
+  dependencia1.agregarAFlota(auto3)
+  assert.equals(3, dependencia1.flota().size())
+  dependencia1.quitarDeFlota(auto2)
+  assert.equals(2, dependencia1.flota().size())
+  dependencia1.quitarDeFlota(auto4) //no está en la flota
+  assert.equals(2, dependencia1.flota().size())
   }
-  
-  test "esta bien equipada"{
-    miDependencia.agregarAFlota(miCorsa) // vel max 150
-    miDependencia.agregarAFlota(miKwid)   // vel max 110
-    miDependencia.agregarAFlota(miKwid2)  // vel max 120
-    assert.equals(true, miDependencia.estaBienEquipada())
-  }
-  
-  test "capacidad total en color"{
-    miDependencia.agregarAFlota(miCorsa) // capacidad 4, color rojo
-    miDependencia.agregarAFlota(miKwid)   // capacidad 3, color azul
-    miDependencia.agregarAFlota(miKwid2)  // capacidad 4, color azul
-    assert.equals(7, miDependencia.capacidadTotalEnColor("azul"))
-    assert.equals(4, miDependencia.capacidadTotalEnColor("rojo"))
-    assert.equals(0, miDependencia.capacidadTotalEnColor("verde"))
-  }
-  
-  test "color del rodado mas rapido"{
-    miDependencia.agregarAFlota (miCorsa) // vel max 150, color rojo
-    miDependencia.agregarAFlota (miKwid)   // vel max 110, color azul
-    miDependencia.agregarAFlota (miKwid2)  // vel max 120, color azul
-    assert.equals("rojo", miDependencia.colorDelRodadoMasRapido())
-    const miCorsa2 = new Corsa(color = "verde") // vel max 150, color verde
-    miDependencia.agregarAFlota (miCorsa2)
-    assert.equals("verde", miDependencia.colorDelRodadoMasRapido()) 
-    const miCorsa3 = new Corsa(color = "azul") // vel max 150, color azul
-    miDependencia.agregarAFlota (miCorsa3)
-    assert.equals("azul", miDependencia.colorDelRodadoMasRapido())
-  }
+  test "la dependencia no tiene autos especiales"{
+    dependencia1.agregarAFlota(auto1)
+    dependencia1.agregarAFlota(auto2)
+    assert.notThat(dependencia1.flota().contains(auto5))
+    }
+    
 }

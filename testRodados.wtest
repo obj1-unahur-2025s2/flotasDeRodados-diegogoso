@@ -1,15 +1,46 @@
 import rodados.*
+describe "Tests de las flotas de rodados que utilizan las distintas dependencias"{
+  
+  const auto1 = new Corsa(color= "rojo")
+  const auto2 = new Corsa(color= "azul")
+  const auto3 = new Kwid(tieneTanqueAdicional= true)
+  const auto4 = new Kwid(tieneTanqueAdicional= false)
+  const auto5 = new RodadoEspecial(capacidad= 2, velocidadMaxima= 180, color = "verde", peso = 1200)
 
-describe "probando un Corsa" {
-  const miCorsa = new Corsa(color = "rojo")
-  test "su capacidad"{
-    assert.equals(4, miCorsa.capacidad())
-  }
-  test "su velocidad maxima"{
-    assert.equals(150, miCorsa.velocidadMaxima())
-  }
-  test "su peso"{
-    assert.equals(1300, miCorsa.peso())
-  } 
+test "Los Corsa tienen capacidad para 4 pasajeros" {
+    assert.equals(4, auto1.capacidad())
+    assert.equals(4, auto2.capacidad())
+}
+test "Los Kwid con tanque adicional tienen capacidad para 3 pasajeros" {
+    assert.equals(3, auto3.capacidad())
+}
+test "Los Kwid sin tanque adicional tienen capacidad para 4 pasajeros" {
+    assert.equals(4, auto4.capacidad())
+}
+test "Los Corsa tienen velocidad máxima de 150 km/h" {
+    assert.equals(150, auto1.velocidadMaxima())
+    assert.equals(150, auto2.velocidadMaxima())
+}
+test "Los Kwid con tanque adicional tienen velocidad máxima de 120 km/h" {
+    assert.equals(120, auto3.velocidadMaxima())
+}
+test "Los Kwid sin tanque adicional tienen velocidad máxima de 110 km/h" {
+    assert.equals(110, auto4.velocidadMaxima())
+}
+test "Los Rodado Especial tienen velocidad máxima de 180 km/h" {
+    assert.equals(180, auto5.velocidadMaxima())
+}
+test "trafic tiene capacidad para 5 pasajeros con interior comodo" {
+    trafic.cambiarInterior(comodo)
+    assert.equals(5, trafic.capacidad())
+    }
+test "trafic tiene capacidad para 12 pasajeros con interior popular" {
+    trafic.cambiarInterior(popular)
+    assert.equals(12, trafic.capacidad())
+    }
+test "trafic tiene velocidad máxima de 130 km/h con motor pulenta" {
+    trafic.cambiarMotor(pulenta)
+    assert.equals(130, trafic.velocidadMaxima())
 
+    }
 }
